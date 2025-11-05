@@ -4,10 +4,13 @@ import com.amman.whatsapp_clone.chat.Chat;
 import com.amman.whatsapp_clone.common.base.BaseAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name = "messages")
 @NamedQuery(name = MessageConstants.FIND_MESSAGES_BY_CHAT_ID
