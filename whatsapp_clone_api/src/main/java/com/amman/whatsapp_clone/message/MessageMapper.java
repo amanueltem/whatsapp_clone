@@ -1,5 +1,6 @@
 package com.amman.whatsapp_clone.message;
 
+import com.amman.whatsapp_clone.file.FileUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ public class MessageMapper {
                 ,message.getSenderId()
                 ,message.getReceiverId()
                 ,message.getCreatedDate()
-                ,null);//to do file thing
+                , FileUtils.readFileFromLocation(message.getMediaFilePath())
+        );
     }
 }
