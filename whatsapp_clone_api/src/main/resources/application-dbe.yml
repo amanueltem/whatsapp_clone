@@ -23,11 +23,4 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/whatsapp-clone
 
-  servlet:
-    multipart:
-      max-file-size: 50MB
 
-application:
-  file:
-    upload:
-      media-output-path: ${user.home}/tmp

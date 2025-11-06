@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: dbe
-
 server:
   port: 8088
+  servlet:
+    multipart:
+      max-file-size: 50MB
+application:
+  file:
+    upload:
+      media-output-path: ${user.home}/tmp
