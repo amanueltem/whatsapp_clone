@@ -3,6 +3,7 @@ package com.amman.whatsapp_clone.message;
 import com.amman.whatsapp_clone.chat.Chat;
 import com.amman.whatsapp_clone.chat.ChatRepository;
 import com.amman.whatsapp_clone.file.FileService;
+import com.amman.whatsapp_clone.file.FileUtils;
 import com.amman.whatsapp_clone.notification.Notification;
 import com.amman.whatsapp_clone.notification.NotificationService;
 import com.amman.whatsapp_clone.notification.NotificationType;
@@ -72,6 +73,17 @@ public class MessageService {
                 .build();
         repo.save(message);
         //to do notification
+        Notification notification=new Notification(
+                chat.getId(),
+                message.getContent(),
+                message.getSenderId(),
+                message.getReceiverId(),
+                message.getType(),
+              null,
+                null,
+                FileUtils.readFileFromLocation(filePath)
+        );
+        notificationService.sendNotification(message.getReceiverId(),notification);
 
     }
 

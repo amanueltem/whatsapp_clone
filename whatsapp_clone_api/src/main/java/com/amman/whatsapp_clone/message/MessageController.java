@@ -1,6 +1,8 @@
 package com.amman.whatsapp_clone.message;
 
 import com.amman.whatsapp_clone.chat.ChatResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/messages")
 @RequiredArgsConstructor
+@Tag(name = "Message")
 public class MessageController {
     private final MessageService service;
     @PostMapping
@@ -24,7 +27,9 @@ public class MessageController {
     @ResponseStatus(HttpStatus.CREATED)
     public  void uploadMedia(
             @RequestParam String chatId
-            , @RequestParam("file")MultipartFile file
+            ,
+            @Parameter()
+            @RequestParam("file")MultipartFile file
             , Authentication connectedUser){
         service.uploadMediaMessage(chatId,file,connectedUser);
     }

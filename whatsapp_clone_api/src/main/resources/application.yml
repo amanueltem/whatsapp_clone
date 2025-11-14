@@ -1,11 +1,16 @@
 spring:
   profiles:
     active: dbe
+
 server:
   port: 8088
   servlet:
     multipart:
       max-file-size: 50MB
+
+springdoc:
+  default-produces-media-type: application/json
+
 application:
   file:
     upload:
