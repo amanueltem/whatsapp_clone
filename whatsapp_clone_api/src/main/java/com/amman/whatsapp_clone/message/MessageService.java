@@ -3,6 +3,9 @@ package com.amman.whatsapp_clone.message;
 import com.amman.whatsapp_clone.chat.Chat;
 import com.amman.whatsapp_clone.chat.ChatRepository;
 import com.amman.whatsapp_clone.file.FileService;
+import com.amman.whatsapp_clone.notification.Notification;
+import com.amman.whatsapp_clone.notification.NotificationService;
+import com.amman.whatsapp_clone.notification.NotificationType;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,7 @@ public class MessageService {
     private final ChatRepository chatRepo;
     private final MessageMapper mapper;
     private final FileService fileService;
+    private final NotificationService notificationService;
     public  void saveMessage(MessageRequest messageRequest){
         Chat chat=chatRepo.findChatBySenderIdAndReceiver(messageRequest.senderId(),messageRequest.receiverId())
                 .orElseThrow(
@@ -33,7 +37,17 @@ public class MessageService {
                 .state(MessageState.SENT)
                 .build();
         repo.save(message);
-        //to do notification
+        Notification notification=new Notification(
+                chat.getId(),
+                message.getContent(),
+                message.getSenderId(),
+                message.getReceiverId(),
+                message.getType(),
+                NotificationType.MESSAGE,
+                chat.getChatName(message.getSenderId()),
+                null
+        );
+        notificationService.sendNotification(message.getReceiverId(),notification);
     }
     public List<MessageResponse> findChatMessages(String chatId){
         return repo.findMessageByChatId(chatId)
@@ -69,12 +83,23 @@ public class MessageService {
     }
 
     @Transactional
-    public  void setMessagesToSeen(String chatId, Authentication currentUser){
+    public  void setMessagesToSeen(String chatId, Authentication authentication){
         Chat chat=chatRepo.findById(chatId)
                 .orElseThrow(()-> new EntityNotFoundException("chat not found."));
-        //final String recipientId=getRecipientId(chat,currentUser);
-        //to do notification
+        final  String recipientId=getRecipientId(chat,authentication);
         repo.SetMessagesToSeenByChatId(chat.getId(),MessageState.SEEN);
+
+        Notification notification=new Notification(
+                chat.getId(),
+               null,
+                null,
+                null,
+               null,
+                NotificationType.SEEN,
+                chat.getChatName(recipientId),
+                null
+        );
+        notificationService.sendNotification(recipientId,notification);
     }
 
     private String getRecipientId(Chat chat, Authentication currentUser) {
