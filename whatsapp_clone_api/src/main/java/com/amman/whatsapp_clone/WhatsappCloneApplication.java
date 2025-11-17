@@ -19,8 +19,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         in= SecuritySchemeIn.HEADER,
         flows = @OAuthFlows(
                 password = @OAuthFlow(
-                        authorizationUrl = "http://keycloak.localhost:8080/realms/whatsapp-clone/protocol/openid-connect/auth",
-                        tokenUrl = "http://keycloak.localhost:8080/realms/whatsapp-clone/protocol/openid-connect/token"
+                        authorizationUrl = "http://localhost:8080/realms/whatsapp-clone/protocol/openid-connect/auth",
+                        tokenUrl = "http://localhost:8080/realms/whatsapp-clone/protocol/openid-connect/token"
                 )
         )
 )
