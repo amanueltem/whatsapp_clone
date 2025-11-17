@@ -9,4 +9,5 @@ import { ChatResponse } from '../../services/models';
 })
 export class ChatList {
 chats: InputSignal<ChatResponse[]>= input<ChatResponse[]> ([]) 
+searchNewContact= false;
 }
